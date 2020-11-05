@@ -8,21 +8,18 @@
 import UIKit
 
 class ChattingViewController: UIViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
- 
     }
-
 }
 extension ChattingViewController:UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return DatabaseManager.shared.dummyList.count
     }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChattingCell", for: indexPath) as? ChattingCell else { return UICollectionViewCell()}
+        cell.chatName.text = DatabaseManager.shared.dummyList[indexPath.row].name
+        cell.chatContent.text = DatabaseManager.shared.dummyList[indexPath.row].content
         return cell
         
     }
