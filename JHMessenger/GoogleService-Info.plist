@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>456300653624-1jrrrcbvglu1g0fjh9o8lvqda0d7b3u3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.456300653624-1jrrrcbvglu1g0fjh9o8lvqda0d7b3u3</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBqwpPjzmN2uuKD9avVSm_dUkuOCvMFupw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>456300653624</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>JH.JHMessenger</string>
+	<key>PROJECT_ID</key>
+	<string>jhmessenger-227a9</string>
+	<key>STORAGE_BUCKET</key>
+	<string>jhmessenger-227a9.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:456300653624:ios:e641231ec9bd7d44184acd</string>
+	<key>DATABASE_URL</key>
+	<string>https://jhmessenger-227a9.firebaseio.com</string>
+</dict>
+</plist>
