@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		A79DE0A22553D7F500EB4D6B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A79DE0A02553D7F500EB4D6B /* Main.storyboard */; };
 		A79DE0A42553D7F500EB4D6B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A79DE0A32553D7F500EB4D6B /* Assets.xcassets */; };
 		A79DE0A72553D7F500EB4D6B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A79DE0A52553D7F500EB4D6B /* LaunchScreen.storyboard */; };
+		A7CAB19F2554150E004AEEE6 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CAB19E2554150E004AEEE6 /* DatabaseManager.swift */; };
 		A7E5BCAE2553FF5E009ECE78 /* ChattingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E5BCAD2553FF5E009ECE78 /* ChattingViewController.swift */; };
 		A7E5BCB425540B06009ECE78 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7E5BCB325540B06009ECE78 /* GoogleService-Info.plist */; };
 		B7DE6FD538A3B237F0AECB24 /* Pods_JHMessenger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B46F53B48A9E38C8AB116064 /* Pods_JHMessenger.framework */; };
@@ -29,6 +30,7 @@
 		A79DE0A32553D7F500EB4D6B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A79DE0A62553D7F500EB4D6B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A79DE0A82553D7F500EB4D6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A7CAB19E2554150E004AEEE6 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		A7E5BCAD2553FF5E009ECE78 /* ChattingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingViewController.swift; sourceTree = "<group>"; };
 		A7E5BCB325540B06009ECE78 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B46F53B48A9E38C8AB116064 /* Pods_JHMessenger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JHMessenger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,7 +62,6 @@
 				62886624AED28630A2197859 /* Pods-JHMessenger.debug.xcconfig */,
 				32A7E973323FF22AB249E36B /* Pods-JHMessenger.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -85,6 +86,7 @@
 		A79DE0992553D7F500EB4D6B /* JHMessenger */ = {
 			isa = PBXGroup;
 			children = (
+				A7CAB19D255414F2004AEEE6 /* Data */,
 				A7E5BCB125540691009ECE78 /* frineds */,
 				A7E5BCB025540686009ECE78 /* chatting */,
 				A79DE09A2553D7F500EB4D6B /* AppDelegate.swift */,
@@ -96,6 +98,14 @@
 				A7E5BCB325540B06009ECE78 /* GoogleService-Info.plist */,
 			);
 			path = JHMessenger;
+			sourceTree = "<group>";
+		};
+		A7CAB19D255414F2004AEEE6 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				A7CAB19E2554150E004AEEE6 /* DatabaseManager.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		A7E5BCB025540686009ECE78 /* chatting */ = {
@@ -230,6 +240,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7E5BCAE2553FF5E009ECE78 /* ChattingViewController.swift in Sources */,
+				A7CAB19F2554150E004AEEE6 /* DatabaseManager.swift in Sources */,
 				A79DE09F2553D7F500EB4D6B /* FriendsViewcontoller.swift in Sources */,
 				A79DE09B2553D7F500EB4D6B /* AppDelegate.swift in Sources */,
 				A79DE09D2553D7F500EB4D6B /* SceneDelegate.swift in Sources */,
