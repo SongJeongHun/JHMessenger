@@ -30,11 +30,7 @@ extension ChatContentViewController:UITableViewDataSource{
     
         return cell
     }
-//    func myCell() -> UITableViewCell{
-//        guard let cell = UITableViewCell() as? chattingCell else { return UITableViewCell()}
-//        return cell
-//        
-//    }
+
     
 }
 struct ChatContent{
