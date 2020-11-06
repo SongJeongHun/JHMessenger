@@ -6,12 +6,19 @@
 //
 
 import UIKit
-import Firebase
-
 class FriendsViewcontoller: UIViewController {
     @IBOutlet weak var collectionView:UICollectionView!
+    var token:NSObjectProtocol?
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Notification 추가
+        token = NotificationCenter.default.addObserver(forName: AddFriendsViewController.addFinished, object: nil, queue: OperationQueue.main) { (noti) in
+            self.collectionView.reloadData()
+        }
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView.reloadData()
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let cell = sender as? UICollectionViewCell,let index = collectionView.indexPath(for: cell) else {return}
@@ -30,9 +37,9 @@ extension FriendsViewcontoller:UICollectionViewDataSource{
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FriendsCell", for: indexPath) as? FriendsCell else{
             return UICollectionViewCell()
         }
-//        cell.layer.borderWidth = 0.2
-//        cell.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-    
+        //        cell.layer.borderWidth = 0.2
+        //        cell.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        
         cell.friendsName.text = DatabaseManager.shared.dummyList[indexPath.row].name
         cell.friendsComment.text = DatabaseManager.shared.dummyList[indexPath.row].comment
         
@@ -61,10 +68,8 @@ extension FriendsViewcontoller:UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width: CGFloat = collectionView.bounds.width
         let height: CGFloat = 40
-        
         return CGSize(width: width, height: height)
     }
-    
 }
 class FriendsCell:UICollectionViewCell{
     @IBOutlet weak var friendsName:UILabel!
@@ -89,8 +94,9 @@ class FriendsHeaderCell:UICollectionReusableView{
         super.awakeFromNib()
     }
 }
-struct Friends:Codable{
+struct Friends:Codable,Equatable{
     let name:String
     let comment:String
     let content:String
 }
+
