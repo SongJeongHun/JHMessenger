@@ -28,6 +28,7 @@ class FriendsViewcontoller: UIViewController {
     }
 }
 extension FriendsViewcontoller:UICollectionViewDataSource{
+
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return DatabaseManager.shared.dummyList.count
@@ -61,6 +62,7 @@ extension FriendsViewcontoller:UICollectionViewDataSource{
     
 }
 extension FriendsViewcontoller:UICollectionViewDelegate{
+
     
     
 }
@@ -86,6 +88,13 @@ class FriendsCellForViewController:UIViewController{
         friendsComment.text = friend.comment
         super.viewDidLoad()
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? ChatContentViewController{
+            vc.currentName = self.friend.name
+        }
+        
+        
+    }
 }
 class FriendsHeaderCell:UICollectionReusableView{
     @IBOutlet weak var myThumbnail:UIImageView!
@@ -97,6 +106,5 @@ class FriendsHeaderCell:UICollectionReusableView{
 struct Friends:Codable,Equatable{
     let name:String
     let comment:String
-    let content:String
 }
 

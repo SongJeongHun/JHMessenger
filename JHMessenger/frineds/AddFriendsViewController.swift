@@ -34,6 +34,7 @@ class AddFriendsViewController:UIViewController{
         present(alert, animated: true, completion: nil)
         NotificationCenter.default.post(name: AddFriendsViewController.addFinished, object: nil)
     }
+   
 }
 extension AddFriendsViewController{
     //Notification 정의

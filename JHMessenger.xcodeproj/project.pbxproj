@@ -15,6 +15,7 @@
 		A79DE0A72553D7F500EB4D6B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A79DE0A52553D7F500EB4D6B /* LaunchScreen.storyboard */; };
 		A7CAB19F2554150E004AEEE6 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CAB19E2554150E004AEEE6 /* DatabaseManager.swift */; };
 		A7CAB1A32555271F004AEEE6 /* AddFriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CAB1A22555271F004AEEE6 /* AddFriendsViewController.swift */; };
+		A7CAB1A6255538AC004AEEE6 /* ChatContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CAB1A5255538AC004AEEE6 /* ChatContentViewController.swift */; };
 		A7E5BCAE2553FF5E009ECE78 /* ChattingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E5BCAD2553FF5E009ECE78 /* ChattingViewController.swift */; };
 		A7E5BCB425540B06009ECE78 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A7E5BCB325540B06009ECE78 /* GoogleService-Info.plist */; };
 		B7DE6FD538A3B237F0AECB24 /* Pods_JHMessenger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B46F53B48A9E38C8AB116064 /* Pods_JHMessenger.framework */; };
@@ -33,6 +34,7 @@
 		A79DE0A82553D7F500EB4D6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7CAB19E2554150E004AEEE6 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		A7CAB1A22555271F004AEEE6 /* AddFriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsViewController.swift; sourceTree = "<group>"; };
+		A7CAB1A5255538AC004AEEE6 /* ChatContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatContentViewController.swift; sourceTree = "<group>"; };
 		A7E5BCAD2553FF5E009ECE78 /* ChattingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChattingViewController.swift; sourceTree = "<group>"; };
 		A7E5BCB325540B06009ECE78 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B46F53B48A9E38C8AB116064 /* Pods_JHMessenger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JHMessenger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -114,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				A7E5BCAD2553FF5E009ECE78 /* ChattingViewController.swift */,
+				A7CAB1A5255538AC004AEEE6 /* ChatContentViewController.swift */,
 			);
 			path = chatting;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 				A7CAB19F2554150E004AEEE6 /* DatabaseManager.swift in Sources */,
 				A79DE09F2553D7F500EB4D6B /* FriendsViewcontoller.swift in Sources */,
 				A79DE09B2553D7F500EB4D6B /* AppDelegate.swift in Sources */,
+				A7CAB1A6255538AC004AEEE6 /* ChatContentViewController.swift in Sources */,
 				A79DE09D2553D7F500EB4D6B /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,8 +8,15 @@
 import UIKit
 
 class ChattingViewController: UIViewController {
+    @IBOutlet weak var chatcollectionView:UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let cell = sender as? UICollectionViewCell, let index = chatcollectionView.indexPath(for: cell) else { return }
+        if let vc = segue.destination as? ChatContentViewController{
+            vc.currentName = DatabaseManager.shared.dummyList[index.row].name
+        }
     }
 }
 extension ChattingViewController:UICollectionViewDataSource{
@@ -19,7 +26,7 @@ extension ChattingViewController:UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChattingCell", for: indexPath) as? ChattingCell else { return UICollectionViewCell()}
         cell.chatName.text = DatabaseManager.shared.dummyList[indexPath.row].name
-        cell.chatContent.text = DatabaseManager.shared.dummyList[indexPath.row].content
+        
         return cell
         
     }
