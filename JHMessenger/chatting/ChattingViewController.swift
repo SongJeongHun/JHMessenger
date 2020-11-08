@@ -10,22 +10,32 @@ import UIKit
 class ChattingViewController: UIViewController {
     @IBOutlet weak var chatcollectionView:UICollectionView!
     override func viewDidLoad() {
+        DatabaseManager.shared.initializeMessages()
+        DatabaseManager.shared.getMessage()
         super.viewDidLoad()
     }
+    //채팅방 segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let cell = sender as? UICollectionViewCell, let index = chatcollectionView.indexPath(for: cell) else { return }
         if let vc = segue.destination as? ChatContentViewController{
-            vc.currentName = DatabaseManager.shared.dummyList[index.row].name
+            vc.currentName = DatabaseManager.shared.receiveMessage[index.row].sender
         }
     }
 }
 extension ChattingViewController:UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return DatabaseManager.shared.dummyList.count
+        //수정 필요
+        //같은 사람 한테 여러번 오면 그만큼 생김 -> 하나로 묶기
+        return DatabaseManager.shared.receiveMessage.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChattingCell", for: indexPath) as? ChattingCell else { return UICollectionViewCell()}
-        cell.chatName.text = DatabaseManager.shared.dummyList[indexPath.row].name
+        
+        //수정 필요
+        //같은 사람 한테 여러번 오면 그만큼 생김 -> 하나로 묶기
+        cell.chatName.text = DatabaseManager.shared.receiveMessage[indexPath.row].sender
+        cell.chatContent.text = DatabaseManager.shared.receiveMessage[indexPath.row].content
+     
         
         return cell
         
