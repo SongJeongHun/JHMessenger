@@ -34,7 +34,7 @@ extension ChatContentViewController:UITableViewDataSource{
 //        cell.chatContent.text = DatabaseManager.shared.sendMessage[indexPath.row].content
 //
         //수신된 메세지
-        cell.chatContent.text = DatabaseManager.shared.receiveMessage[indexPath.row].content
+        cell.chatContent.text = DatabaseManager.shared.receiveMessage[indexPath.item].content
     
         return cell
     }

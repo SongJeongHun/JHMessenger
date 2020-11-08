@@ -9,9 +9,11 @@ import UIKit
 
 class ChattingViewController: UIViewController {
     @IBOutlet weak var chatcollectionView:UICollectionView!
+    var dict:[String:Message]!
     override func viewDidLoad() {
         DatabaseManager.shared.initializeMessages()
         DatabaseManager.shared.getMessage()
+        self.dict = DatabaseManager.shared.mergeSender()
         super.viewDidLoad()
     }
     //채팅방 segue
@@ -26,22 +28,15 @@ extension ChattingViewController:UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //수정 필요
         //같은 사람 한테 여러번 오면 그만큼 생김 -> 하나로 묶기
-        return DatabaseManager.shared.receiveMessage.count
+        return self.dict.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChattingCell", for: indexPath) as? ChattingCell else { return UICollectionViewCell()}
-        
-        //수정 필요
-        //같은 사람 한테 여러번 오면 그만큼 생김 -> 하나로 묶기
-        cell.chatName.text = DatabaseManager.shared.receiveMessage[indexPath.row].sender
-        cell.chatContent.text = DatabaseManager.shared.receiveMessage[indexPath.row].content
-     
-        
+//        let dictioncary = self.dict[(indexPath as NSIndexPath).row]
+        cell.chatName.text = Array(self.dict.keys)[indexPath.row]
+        cell.chatContent.text = Array(self.dict.values)[indexPath.row].content
         return cell
-        
     }
-    
-    
 }
 extension ChattingViewController:UICollectionViewDelegate{
     
@@ -52,7 +47,6 @@ extension ChattingViewController:UICollectionViewDelegateFlowLayout{
         let height:CGFloat = 40
         return CGSize(width: width, height: height)
     }
-    
 }
 class ChattingCell:UICollectionViewCell{
     @IBOutlet weak var chatThumbnail:UIImageView!

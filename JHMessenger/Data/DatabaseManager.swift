@@ -45,4 +45,13 @@ class DatabaseManager{
         self.receiveMessage = []
         self.sendMessage = []
     }
+    func mergeSender() -> [String:Message]{
+        let array = self.receiveMessage
+        var dict:[String:Message] = [:]
+        for i in array{
+            let name = i.sender
+            dict.updateValue(i, forKey: name)
+        }
+        return dict
+    }
 }
