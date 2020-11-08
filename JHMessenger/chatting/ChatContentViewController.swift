@@ -5,10 +5,12 @@
 //  Created by 송정훈 on 2020/11/06.
 //
 
+
 import UIKit
 
 class ChatContentViewController: UIViewController {
-    var currentName:String!
+    var currentName:String = ""
+    var currentChat:[String] = []
     @IBOutlet weak var name:UILabel!
     @IBOutlet weak var tableView:UITableView!
     override func viewDidLoad() {
@@ -22,11 +24,10 @@ class ChatContentViewController: UIViewController {
 extension ChatContentViewController:UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        DatabaseManager.shared.sendMessage.count +
-        return  DatabaseManager.shared.receiveMessage.count
+        return  currentChat.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "chattingCell") as? chattingCell else {  return UITableViewCell()}
         cell.friendsName.text = self.currentName
         
@@ -34,8 +35,7 @@ extension ChatContentViewController:UITableViewDataSource{
 //        cell.chatContent.text = DatabaseManager.shared.sendMessage[indexPath.row].content
 //
         //수신된 메세지
-        cell.chatContent.text = DatabaseManager.shared.receiveMessage[indexPath.item].content
-    
+        cell.chatContent.text = currentChat[indexPath.item]
         return cell
     }
 

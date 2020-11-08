@@ -7,6 +7,7 @@
 
 import UIKit
 class AddFriendsViewController:UIViewController{
+    var dict:[String:Message] = [:]
     @IBOutlet weak var friendsName:UITextField!
     @IBOutlet weak var friendsID:UITextField!
     @IBAction func cancel(_ sender:Any){
@@ -34,7 +35,21 @@ class AddFriendsViewController:UIViewController{
         present(alert, animated: true, completion: nil)
         NotificationCenter.default.post(name: AddFriendsViewController.addFinished, object: nil)
     }
-   
+    override func viewDidLoad() {
+        DatabaseManager.shared.initializeMessages()
+        DatabaseManager.shared.getMessage()
+        self.dict = DatabaseManager.shared.mergeSender()
+        super.viewDidLoad()
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        //segue 이어주기
+//        guard let cell = sender as? UICollectionViewCell, let index = chatcollectionView.indexPath(for: cell) else { return }
+//        if let vc = segue.destination as? ChatContentViewController{
+//            let name = Array(self.dict.keys)[index.row]
+//            vc.currentName = name
+//            vc.currentChat = DatabaseManager.shared.mergeContentByName(name)
+//        }
+    }
 }
 extension AddFriendsViewController{
     //Notification 정의

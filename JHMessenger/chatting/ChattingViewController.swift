@@ -20,7 +20,9 @@ class ChattingViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let cell = sender as? UICollectionViewCell, let index = chatcollectionView.indexPath(for: cell) else { return }
         if let vc = segue.destination as? ChatContentViewController{
-            vc.currentName = DatabaseManager.shared.receiveMessage[index.row].sender
+            let name = Array(self.dict.keys)[index.row]
+            vc.currentName = name
+            vc.currentChat = DatabaseManager.shared.mergeContentByName(name)
         }
     }
 }
