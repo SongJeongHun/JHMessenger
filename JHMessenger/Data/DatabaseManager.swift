@@ -18,7 +18,7 @@ class DatabaseManager{
     var friendsList:[String] = ["김경모","염종건"]
     
     //채팅 관련
-    var myChatData:ChatContent = ChatContent(name: "송정훈", messages: [Message(sender: "염종건", receiver: "송정훈", content: "ㅇㅇ"),Message(sender: "염종건", receiver: "송정훈", content: "ㅋㅋㅋ"),Message(sender: "염종건", receiver: "송정훈", content: "ㅇㅎ"),Message(sender: "김경모", receiver: "송정훈", content: "ㅋㅋㅋㅋㅋㅋ"),Message(sender: "송정훈", receiver: "염종건", content: "ㅋㅋ")])
+    var myChatData:ChatContent = ChatContent(name: "송정훈", messages: [Message(sender: "염종건", receiver: "송정훈", content: "ㅇㅇ"),Message(sender: "염종건", receiver: "송정훈", content: "ㅋㅋㅋ"),Message(sender: "염종건", receiver: "송정훈", content: "ㅇㅎ"),Message(sender: "김경모", receiver: "송정훈", content: "ㅋㅋㅋㅋㅋㅋ"),Message(sender: "송정훈", receiver: "염종건", content: "ㅋㅋ"),Message(sender: "송정훈", receiver: "염종건", content: "ㅋㅋ"),Message(sender: "송정훈", receiver: "김경모", content: "ㅋㅋ"),Message(sender: "송정훈", receiver: "염종건", content: "ㅋㅋ")])
     
     var receiveMessage:[Message] = []
     var sendMessage:[Message] = []
@@ -53,13 +53,21 @@ class DatabaseManager{
         }
         return dict
     }
-    func mergeContentByName(_ name:String) -> [String]{
-        var array:[String] = []
+    func mergeContentByName(_ name:String) -> [Message]{
+        var array:[Message] = []
         for i in self.receiveMessage{
             if i.sender == name{
-                array.append(i.content)
+                array.append(i)
+            }
+        }
+        for i in self.sendMessage{
+            if i.receiver == name{
+                array.append(i)
             }
         }
         return array
+    }
+    func sendMessage(sender:String,receiver:String,content:String){
+        self.myChatData.messages.append(Message(sender: sender, receiver: receiver, content: content))
     }
 }

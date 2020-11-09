@@ -10,48 +10,62 @@ import UIKit
 
 class ChatContentViewController: UIViewController {
     var currentName:String = ""
-    var currentChat:[String] = []
+    var currentChat:[Message] = []
     @IBOutlet weak var name:UILabel!
     @IBOutlet weak var tableView:UITableView!
+    @IBOutlet weak var message:UITextField!
+    @IBAction func sendMessage(_ sender:Any){
+        guard let message = message.text ?? "" else { return }
+        DatabaseManager.shared.sendMessage(sender: "송정훈", receiver: self.currentName, content:message )
+        DatabaseManager.shared.initializeMessages()
+        DatabaseManager.shared.getMessage()
+        self.currentChat = DatabaseManager.shared.mergeContentByName(currentName)
+        tableView.reloadData()
+    }
     override func viewDidLoad() {
         DatabaseManager.shared.initializeMessages()
         DatabaseManager.shared.getMessage()
         name.text = currentName
         super.viewDidLoad()
     }
-    
 }
 extension ChatContentViewController:UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        DatabaseManager.shared.sendMessage.count +
         return  currentChat.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "chattingCell") as? chattingCell else {  return UITableViewCell()}
-        cell.friendsName.text = self.currentName
-        
-//        //송신된 메세지
-//        cell.chatContent.text = DatabaseManager.shared.sendMessage[indexPath.row].content
-//
-        //수신된 메세지
-        cell.chatContent.text = currentChat[indexPath.item]
-        return cell
+        if currentChat[indexPath.row].sender == "송정훈" {
+            //송신 메세지
+            let mycell = tableView.dequeueReusableCell(withIdentifier: "mycell") as! mycell
+            mycell.chatContent.text = currentChat[indexPath.row].content
+            return mycell
+            
+        }else{
+            //수신 메세지
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "chattingCell") as? chattingCell else {  return UITableViewCell() }
+            cell.chatContent.text = currentChat[indexPath.row].content
+            cell.friendsName.text = self.currentName
+            return cell
+        }
     }
-
-    
 }
 struct ChatContent{
     let name:String
-    let messages:[Message]
+    var messages:[Message]
 }
 struct Message {
     let sender:String
     let receiver:String
     let content:String
+//    let initTime:Date
+//    let read:Bool
 }
 class chattingCell:UITableViewCell{
     @IBOutlet weak var friendsName:UILabel!
     @IBOutlet weak var chatContent:UILabel!
     @IBOutlet weak var thumbNail:UIImageView!
+}
+class mycell:UITableViewCell{
+    @IBOutlet weak var chatContent:UILabel!
 }
