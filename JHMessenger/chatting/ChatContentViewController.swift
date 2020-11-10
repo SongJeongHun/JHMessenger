@@ -9,6 +9,7 @@
 import UIKit
 
 class ChatContentViewController: UIViewController, UITableViewDelegate {
+    
     var currentName:String = ""
     var currentChat:[Message] = []
     var keyboardShowToken:NSObjectProtocol?
@@ -30,7 +31,7 @@ class ChatContentViewController: UIViewController, UITableViewDelegate {
         guard let message = message.text ?? "" else { return }
         DatabaseManager.shared.sendMessage(sender: "송정훈", receiver: self.currentName, content:message )
         DatabaseManager.shared.initializeMessages()
-        DatabaseManager.shared.getMessage()
+        DatabaseManager.shared.getMessage(tableView)
         self.currentChat = DatabaseManager.shared.mergeContentByName(currentName)
         self.message.text = ""
         //notification 추가 하기 채팅방 목록 reloadData
@@ -40,7 +41,7 @@ class ChatContentViewController: UIViewController, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         DatabaseManager.shared.initializeMessages()
-        DatabaseManager.shared.getMessage()
+        DatabaseManager.shared.getMessage(tableView)
         name.text = currentName
         keyboardShowToken = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: OperationQueue.main,using: {(noti) in
             if let keyboardFrame = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue{
@@ -83,11 +84,8 @@ extension ChatContentViewController:UITableViewDataSource{
         }
     }
 }
-struct ChatContent{
-    let name:String
-    var messages:[Message]
-}
-struct Message {
+
+struct Message:Codable{
     let sender:String
     let receiver:String
     let content:String

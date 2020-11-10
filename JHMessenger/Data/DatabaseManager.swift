@@ -15,36 +15,31 @@ class DatabaseManager{
     }
     let db = Database.database().reference().child("송정훈")
     //친구 목록 관련
-    var dummyList:[Friends] = [Friends(name: "염종건", comment: "ㅇ")]
+    var dummyList:[Friends] = []
     var friendsList:[String] = []
     
     //채팅 관련
-    var myChatData:ChatContent = ChatContent(name: "송정훈", messages: [Message(sender: "염종건", receiver: "송정훈", content: "ㅇㅇ"),Message(sender: "염종건", receiver: "송정훈", content: "ㅋㅋㅋ"),Message(sender: "염종건", receiver: "송정훈", content: "ㅇㅎ"),Message(sender: "김경모", receiver: "송정훈", content: "ㅋㅋㅋㅋㅋㅋ"),Message(sender: "송정훈", receiver: "염종건", content: "ㅋㅋ"),Message(sender: "송정훈", receiver: "염종건", content: "ㅋㅋ"),Message(sender: "송정훈", receiver: "김경모", content: "ㅋㅋ"),Message(sender: "송정훈", receiver: "염종건", content: "ㅋㅋ")])
-    
+    var myChatData:[Message] = []
+
     var receiveMessage:[Message] = []
     var sendMessage:[Message] = []
-    
-    func test(){
-        self.dummyList.append(Friends(name: "김경모", comment: "ㅋ"))
-    }
-    
-    func getFriendsList(){
+    func getFriendsList(_ view:UICollectionView){
         self.db.child("friends").observeSingleEvent(of: .value){DataSnapshot in
             guard let friendsData = DataSnapshot.value as? [String:Any] else { return }
             let data = try! JSONSerialization.data(withJSONObject: Array(friendsData.values), options: [])
             let decoder = JSONDecoder()
             let friendsList = try! decoder.decode([Friends].self, from: data)
+            
             self.dummyList = friendsList
-            print("get Finisehd")
+            self.dummyList.sort(by: { $0.name < $1.name })
+            view.reloadData()
     
         }
-        
-        print("function Finished")
+   
     }
     func addFriends(name:String) -> Bool{
         guard friendsList.contains(name) else {
             db.child("friends").child(name).setValue(["name":name,"comment":"안녕하세요."])
-            getFriendsList()
             for i in self.dummyList{
                 self.friendsList.append(i.name)
             }
@@ -52,8 +47,24 @@ class DatabaseManager{
         }
         return false
     }
-    func getMessage(){
-        guard let messages:[Message] = myChatData.messages else { return }
+    func getMessage(_ view:Any){
+
+        self.db.child("messages").observeSingleEvent(of: .value){DataSnapshot in
+            guard let friendsData = DataSnapshot.value as? Message else { return }
+            let data = try! JSONSerialization.data(withJSONObject: friendsData, options: [])
+            let decoder = JSONDecoder()
+            let chatList = try! decoder.decode([Message].self, from: data)
+            self.myChatData = chatList
+            if type(of: view) == UICollectionView.self{
+                let v = view as! UICollectionView
+                v.reloadData()
+            }else if type(of: view) == UITableView.self{
+                let v = view as! UITableView
+                v.reloadData()
+            }
+            
+        }
+        guard let messages:[Message] = myChatData else { return }
         for i in messages {
             if i.sender == "송정훈"{
                 self.sendMessage.append(i)
@@ -93,6 +104,8 @@ class DatabaseManager{
         return array
     }
     func sendMessage(sender:String,receiver:String,content:String){
-        self.myChatData.messages.append(Message(sender: sender, receiver: receiver, content: content))
+        let dict = ["sender":sender,"receiver":receiver,"content":content]
+        db.child("messages").setValue(dict)
+        self.myChatData.append(Message(sender: sender, receiver: receiver, content: content))
     }
 }

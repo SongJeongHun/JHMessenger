@@ -6,10 +6,7 @@
 //
 
 import UIKit
-import Firebase
 class FriendsViewcontoller: UIViewController {
-    var list:[Friends] = [Friends(name: "염종건", comment: "ㅇ")]
-    let db = Database.database().reference().child("송정훈")
     @IBOutlet weak var collectionView:UICollectionView!
     var token:NSObjectProtocol?
     deinit{
@@ -19,25 +16,16 @@ class FriendsViewcontoller: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("view Did Load")
         //Notification 추가
         token = NotificationCenter.default.addObserver(forName: AddFriendsViewController.addFinished, object: nil, queue: OperationQueue.main) { noti in
-            self.collectionView.reloadData()
+            DatabaseManager.shared.getFriendsList(self.collectionView)
         }
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.db.child("friends").observeSingleEvent(of: .value){DataSnapshot in
-            guard let friendsData = DataSnapshot.value as? [String:Any] else { return }
-            let data = try! JSONSerialization.data(withJSONObject: Array(friendsData.values), options: [])
-            let decoder = JSONDecoder()
-            let friendsList = try! decoder.decode([Friends].self, from: data)
-            self.list = friendsList
-            print("get Finisehd")
-            DatabaseManager.shared.getFriendsList()
-            print(DatabaseManager.shared.dummyList.count)
-            self.collectionView.reloadData()
-        }
-        
+        DatabaseManager.shared.getFriendsList(self.collectionView)
+        self.collectionView.reloadData()
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let cell = sender as? UICollectionViewCell,let index = collectionView.indexPath(for: cell) else {return}
@@ -45,6 +33,19 @@ class FriendsViewcontoller: UIViewController {
             vc.friend = DatabaseManager.shared.dummyList[index.row]
         }
     }
+//    func getFriendsList(){
+//        print("func start")
+//        self.db.child("friends").observeSingleEvent(of: .value){DataSnapshot in
+//            guard let friendsData = DataSnapshot.value as? [String:Any] else { return }
+//            let data = try! JSONSerialization.data(withJSONObject: Array(friendsData.values), options: [])
+//            let decoder = JSONDecoder()
+//            let friendsList = try! decoder.decode([Friends].self, from: data)
+//            self.list = friendsList
+//            print("Get Finished")
+//        }
+//
+//        print("function Finished")
+//    }
 }
 extension FriendsViewcontoller:UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -75,7 +76,7 @@ extension FriendsViewcontoller:UICollectionViewDataSource{
     
 }
 extension FriendsViewcontoller:UICollectionViewDelegate{
-    
+
     
     
 }
@@ -105,7 +106,7 @@ class FriendsCellForViewController:UIViewController{
         if let vc = segue.destination as? ChatContentViewController{
             vc.currentName = self.friend.name
             DatabaseManager.shared.initializeMessages()
-            DatabaseManager.shared.getMessage()
+            DatabaseManager.shared.getMessage(self)
             vc.currentChat = DatabaseManager.shared.mergeContentByName(friend.name)
         }
     }

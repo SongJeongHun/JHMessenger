@@ -17,12 +17,13 @@ class ChattingViewController: UIViewController {
         }
     }
     override func viewDidLoad() {
+      
         token = NotificationCenter.default.addObserver(forName: ChatContentViewController.sendFinised, object: nil, queue: OperationQueue.main, using: {noti in
             self.dict = DatabaseManager.shared.mergeSender()
             self.chatcollectionView.reloadData()
         })
         DatabaseManager.shared.initializeMessages()
-        DatabaseManager.shared.getMessage()
+        DatabaseManager.shared.getMessage(self.chatcollectionView)
         self.dict = DatabaseManager.shared.mergeSender()
         super.viewDidLoad()
     }
@@ -35,6 +36,7 @@ class ChattingViewController: UIViewController {
             vc.currentChat = DatabaseManager.shared.mergeContentByName(name)
         }
     }
+    
 }
 extension ChattingViewController:UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
