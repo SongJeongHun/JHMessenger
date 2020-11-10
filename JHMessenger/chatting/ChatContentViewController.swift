@@ -8,25 +8,56 @@
 
 import UIKit
 
-class ChatContentViewController: UIViewController {
+class ChatContentViewController: UIViewController, UITableViewDelegate {
     var currentName:String = ""
     var currentChat:[Message] = []
+    var keyboardShowToken:NSObjectProtocol?
+    var keyboardHideToken:NSObjectProtocol?
+    deinit {
+        if let token = keyboardShowToken{
+            NotificationCenter.default.removeObserver(token)
+        }
+        if let token = keyboardHideToken{
+            NotificationCenter.default.removeObserver(token)
+        }
+    }
     @IBOutlet weak var name:UILabel!
     @IBOutlet weak var tableView:UITableView!
     @IBOutlet weak var message:UITextField!
+    @IBOutlet weak var plusButton:UIButton!
+    @IBOutlet weak var sendButton:UIButton!
     @IBAction func sendMessage(_ sender:Any){
         guard let message = message.text ?? "" else { return }
         DatabaseManager.shared.sendMessage(sender: "송정훈", receiver: self.currentName, content:message )
         DatabaseManager.shared.initializeMessages()
         DatabaseManager.shared.getMessage()
         self.currentChat = DatabaseManager.shared.mergeContentByName(currentName)
+        self.message.text = ""
         tableView.reloadData()
     }
     override func viewDidLoad() {
+        super.viewDidLoad()
         DatabaseManager.shared.initializeMessages()
         DatabaseManager.shared.getMessage()
         name.text = currentName
-        super.viewDidLoad()
+        keyboardShowToken = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: OperationQueue.main,using: {(noti) in
+            if let keyboardFrame = noti.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue{
+                //키보드 높이를 저장
+                let height = keyboardFrame.cgRectValue.height
+                for constraint in self.view.constraints{
+                    if constraint.identifier == "chatConstraint"{
+                        constraint.constant =  height + self.message.bounds.height
+                    }
+                }
+            }
+        })
+        keyboardHideToken = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: OperationQueue.main, using: {noti in
+            for constraint in self.view.constraints{
+                if constraint.identifier == "chatConstraint"{
+                    constraint.constant = 117
+                }
+            }
+        })
     }
 }
 extension ChatContentViewController:UITableViewDataSource{

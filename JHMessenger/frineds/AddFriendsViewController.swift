@@ -50,8 +50,10 @@ class AddFriendsViewController:UIViewController{
 //            vc.currentChat = DatabaseManager.shared.mergeContentByName(name)
 //        }
     }
+    
 }
 extension AddFriendsViewController{
+    
     //Notification 정의
     static let addFinished = Notification.Name(rawValue: "addFinished")
 }

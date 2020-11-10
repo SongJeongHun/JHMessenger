@@ -9,10 +9,15 @@ import UIKit
 class FriendsViewcontoller: UIViewController {
     @IBOutlet weak var collectionView:UICollectionView!
     var token:NSObjectProtocol?
+    deinit{
+        if let token = token{
+            NotificationCenter.default.removeObserver(token)
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         //Notification 추가
-        token = NotificationCenter.default.addObserver(forName: AddFriendsViewController.addFinished, object: nil, queue: OperationQueue.main) { (noti) in
+        token = NotificationCenter.default.addObserver(forName: AddFriendsViewController.addFinished, object: nil, queue: OperationQueue.main) { noti in
             self.collectionView.reloadData()
         }
     }
@@ -38,12 +43,8 @@ extension FriendsViewcontoller:UICollectionViewDataSource{
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FriendsCell", for: indexPath) as? FriendsCell else{
             return UICollectionViewCell()
         }
-        //        cell.layer.borderWidth = 0.2
-        //        cell.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        
         cell.friendsName.text = DatabaseManager.shared.dummyList[indexPath.row].name
         cell.friendsComment.text = DatabaseManager.shared.dummyList[indexPath.row].comment
-        
         return cell
     }
     

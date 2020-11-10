@@ -227,7 +227,7 @@
                         <constraints>
                             <constraint firstItem="0oT-5e-wYD" firstAttribute="trailing" secondItem="GAm-JF-pS4" secondAttribute="trailing" id="8Cv-za-F09"/>
                             <constraint firstItem="IoE-A2-tSQ" firstAttribute="top" secondItem="GAm-JF-pS4" secondAttribute="bottom" constant="8" symbolic="YES" id="9ib-PY-AMD"/>
-                            <constraint firstItem="0oT-5e-wYD" firstAttribute="bottom" secondItem="GAm-JF-pS4" secondAttribute="bottom" constant="114" id="URe-Cr-0Lm"/>
+                            <constraint firstItem="0oT-5e-wYD" firstAttribute="bottom" secondItem="GAm-JF-pS4" secondAttribute="bottom" constant="114" identifier="chatConstraint" id="URe-Cr-0Lm"/>
                             <constraint firstItem="68i-Ei-1pJ" firstAttribute="top" secondItem="0oT-5e-wYD" secondAttribute="top" constant="10" id="ZQg-b0-jXW"/>
                             <constraint firstItem="68i-Ei-1pJ" firstAttribute="leading" secondItem="0oT-5e-wYD" secondAttribute="leading" constant="10" id="ZQj-xT-RvS"/>
                             <constraint firstItem="GAm-JF-pS4" firstAttribute="top" secondItem="0oT-5e-wYD" secondAttribute="top" constant="44" id="aG0-zT-OUG"/>
@@ -243,6 +243,8 @@
                     <connections>
                         <outlet property="message" destination="IoE-A2-tSQ" id="m1k-8D-d59"/>
                         <outlet property="name" destination="68i-Ei-1pJ" id="vXS-WB-4Ip"/>
+                        <outlet property="plusButton" destination="WH1-yH-YMt" id="tFU-Th-ATI"/>
+                        <outlet property="sendButton" destination="N4K-NH-Evj" id="1cZ-DI-9HB"/>
                         <outlet property="tableView" destination="GAm-JF-pS4" id="Crh-Dz-Ex8"/>
                     </connections>
                 </viewController>
@@ -582,7 +584,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="FZC-Uy-b8E"/>
+        <segue reference="kDY-cP-KdN"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bubble.left.fill" catalog="system" width="128" height="110"/>
