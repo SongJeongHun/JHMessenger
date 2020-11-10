@@ -10,12 +10,13 @@ import Firebase
 class DatabaseManager{
     static let shared = DatabaseManager()
     private init(){
+        
         //Singleton 싱글톤
     }
-    let db = Database.database().reference().child("friends")
+    let db = Database.database().reference().child("송정훈")
     //친구 목록 관련
-    var dummyList:[Friends] = [Friends(name: "김경모", comment: "ㅎㅇ"),Friends(name: "염종건", comment: "안녕하세요")]
-    var friendsList:[String] = ["김경모","염종건"]
+    var dummyList:[Friends] = [Friends(name: "염종건", comment: "ㅇ")]
+    var friendsList:[String] = []
     
     //채팅 관련
     var myChatData:ChatContent = ChatContent(name: "송정훈", messages: [Message(sender: "염종건", receiver: "송정훈", content: "ㅇㅇ"),Message(sender: "염종건", receiver: "송정훈", content: "ㅋㅋㅋ"),Message(sender: "염종건", receiver: "송정훈", content: "ㅇㅎ"),Message(sender: "김경모", receiver: "송정훈", content: "ㅋㅋㅋㅋㅋㅋ"),Message(sender: "송정훈", receiver: "염종건", content: "ㅋㅋ"),Message(sender: "송정훈", receiver: "염종건", content: "ㅋㅋ"),Message(sender: "송정훈", receiver: "김경모", content: "ㅋㅋ"),Message(sender: "송정훈", receiver: "염종건", content: "ㅋㅋ")])
@@ -23,10 +24,30 @@ class DatabaseManager{
     var receiveMessage:[Message] = []
     var sendMessage:[Message] = []
     
+    func test(){
+        self.dummyList.append(Friends(name: "김경모", comment: "ㅋ"))
+    }
+    
+    func getFriendsList(){
+        self.db.child("friends").observeSingleEvent(of: .value){DataSnapshot in
+            guard let friendsData = DataSnapshot.value as? [String:Any] else { return }
+            let data = try! JSONSerialization.data(withJSONObject: Array(friendsData.values), options: [])
+            let decoder = JSONDecoder()
+            let friendsList = try! decoder.decode([Friends].self, from: data)
+            self.dummyList = friendsList
+            print("get Finisehd")
+    
+        }
+        
+        print("function Finished")
+    }
     func addFriends(name:String) -> Bool{
         guard friendsList.contains(name) else {
-            dummyList.append(Friends(name: name, comment: "안녕하세요"))
-            friendsList.append(name)
+            db.child("friends").child(name).setValue(["name":name,"comment":"안녕하세요."])
+            getFriendsList()
+            for i in self.dummyList{
+                self.friendsList.append(i.name)
+            }
             return true
         }
         return false
@@ -49,6 +70,10 @@ class DatabaseManager{
         var dict:[String:Message] = [:]
         for i in self.receiveMessage{
             let name = i.sender
+            dict.updateValue(i, forKey: name)
+        }
+        for i in self.sendMessage{
+            let name = i.receiver
             dict.updateValue(i, forKey: name)
         }
         return dict

@@ -33,6 +33,8 @@ class ChatContentViewController: UIViewController, UITableViewDelegate {
         DatabaseManager.shared.getMessage()
         self.currentChat = DatabaseManager.shared.mergeContentByName(currentName)
         self.message.text = ""
+        //notification 추가 하기 채팅방 목록 reloadData
+        NotificationCenter.default.post(name: ChatContentViewController.sendFinised, object: nil)
         tableView.reloadData()
     }
     override func viewDidLoad() {
@@ -99,4 +101,7 @@ class chattingCell:UITableViewCell{
 }
 class mycell:UITableViewCell{
     @IBOutlet weak var chatContent:UILabel!
+}
+extension ChatContentViewController{
+    static let sendFinised = Notification.Name("sendFinised")
 }

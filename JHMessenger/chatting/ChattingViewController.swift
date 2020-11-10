@@ -10,7 +10,17 @@ import UIKit
 class ChattingViewController: UIViewController {
     @IBOutlet weak var chatcollectionView:UICollectionView!
     var dict:[String:Message]!
+    var token:NSObjectProtocol?
+    deinit {
+        if let token = token{
+            NotificationCenter.default.removeObserver(token)
+        }
+    }
     override func viewDidLoad() {
+        token = NotificationCenter.default.addObserver(forName: ChatContentViewController.sendFinised, object: nil, queue: OperationQueue.main, using: {noti in
+            self.dict = DatabaseManager.shared.mergeSender()
+            self.chatcollectionView.reloadData()
+        })
         DatabaseManager.shared.initializeMessages()
         DatabaseManager.shared.getMessage()
         self.dict = DatabaseManager.shared.mergeSender()
