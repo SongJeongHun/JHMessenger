@@ -9,7 +9,6 @@ import UIKit
 
 class ChattingViewController: UIViewController {
     @IBOutlet weak var chatcollectionView:UICollectionView!
-    var dict:[String:Message]!
     var token:NSObjectProtocol?
     deinit {
         if let token = token{
@@ -17,38 +16,43 @@ class ChattingViewController: UIViewController {
         }
     }
     override func viewDidLoad() {
-      
         token = NotificationCenter.default.addObserver(forName: ChatContentViewController.sendFinised, object: nil, queue: OperationQueue.main, using: {noti in
-            self.dict = DatabaseManager.shared.mergeSender()
+            DatabaseManager.shared.getMessage(self.chatcollectionView)
             self.chatcollectionView.reloadData()
         })
         DatabaseManager.shared.initializeMessages()
-        DatabaseManager.shared.getMessage(self.chatcollectionView)
-        self.dict = DatabaseManager.shared.mergeSender()
+//        DatabaseManager.shared.getMessage(self.chatcollectionView)
+//        self.dict = DatabaseManager.shared.mergeSender()
         super.viewDidLoad()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        DatabaseManager.shared.getMessage(self.chatcollectionView)
+        super.viewWillAppear(animated)
     }
     //채팅방 segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let cell = sender as? UICollectionViewCell, let index = chatcollectionView.indexPath(for: cell) else { return }
         if let vc = segue.destination as? ChatContentViewController{
-            let name = Array(self.dict.keys)[index.row]
+            let name = Array(DatabaseManager.shared.dict.keys)[index.row]
             vc.currentName = name
+            DatabaseManager.shared.getMessage(vc.tableView)
             vc.currentChat = DatabaseManager.shared.mergeContentByName(name)
+            }
         }
     }
     
-}
+
 extension ChattingViewController:UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //수정 필요
         //같은 사람 한테 여러번 오면 그만큼 생김 -> 하나로 묶기
-        return self.dict.count
+        return DatabaseManager.shared.dict.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChattingCell", for: indexPath) as? ChattingCell else { return UICollectionViewCell()}
 //        let dictioncary = self.dict[(indexPath as NSIndexPath).row]
-        cell.chatName.text = Array(self.dict.keys)[indexPath.row]
-        cell.chatContent.text = Array(self.dict.values)[indexPath.row].content
+        cell.chatName.text = Array(DatabaseManager.shared.dict.keys)[indexPath.row]
+        cell.chatContent.text = Array(DatabaseManager.shared.dict.values)[indexPath.row].content
         return cell
     }
 }

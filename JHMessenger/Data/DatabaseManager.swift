@@ -13,6 +13,13 @@ class DatabaseManager{
         
         //Singleton 싱글톤
     }
+    let formatter: DateFormatter = {
+        let f = DateFormatter()
+        f.timeStyle = .short
+        f.locale = Locale(identifier: "Ko_kr")
+        return f
+    }()
+    var dict:[String:Message] = [:]
     let db = Database.database().reference().child("송정훈")
     //친구 목록 관련
     var dummyList:[Friends] = []
@@ -20,7 +27,9 @@ class DatabaseManager{
     
     //채팅 관련
     var myChatData:[Message] = []
-
+    var currentChat:[Message] = []
+    
+    
     var receiveMessage:[Message] = []
     var sendMessage:[Message] = []
     func getFriendsList(_ view:UICollectionView){
@@ -29,13 +38,11 @@ class DatabaseManager{
             let data = try! JSONSerialization.data(withJSONObject: Array(friendsData.values), options: [])
             let decoder = JSONDecoder()
             let friendsList = try! decoder.decode([Friends].self, from: data)
-            
             self.dummyList = friendsList
             self.dummyList.sort(by: { $0.name < $1.name })
             view.reloadData()
-    
         }
-   
+        
     }
     func addFriends(name:String) -> Bool{
         guard friendsList.contains(name) else {
@@ -48,46 +55,49 @@ class DatabaseManager{
         return false
     }
     func getMessage(_ view:Any){
-
-        self.db.child("messages").observeSingleEvent(of: .value){DataSnapshot in
-            guard let friendsData = DataSnapshot.value as? Message else { return }
-            let data = try! JSONSerialization.data(withJSONObject: friendsData, options: [])
+        self.db.child("messages").observeSingleEvent(of: .value){ [self]DataSnapshot in
+            guard let friendsData = DataSnapshot.value as? [String:Any] else { return }
+            self.initializeMessages()
+            let data = try! JSONSerialization.data(withJSONObject: Array(friendsData.values), options: [])
             let decoder = JSONDecoder()
             let chatList = try! decoder.decode([Message].self, from: data)
             self.myChatData = chatList
-            if type(of: view) == UICollectionView.self{
-                let v = view as! UICollectionView
-                v.reloadData()
-            }else if type(of: view) == UITableView.self{
-                let v = view as! UITableView
-                v.reloadData()
+            guard let messages:[Message] = myChatData else { return }
+            for i in messages {
+                if i.sender == "송정훈"{
+                    self.sendMessage.append(i)
+                }else{
+                    self.receiveMessage.append(i)
+                }
             }
-            
-        }
-        guard let messages:[Message] = myChatData else { return }
-        for i in messages {
-            if i.sender == "송정훈"{
-                self.sendMessage.append(i)
-            }else{
-                self.receiveMessage.append(i)
+            self.mergeSender()
+           
+            if let v = view as? UICollectionView {
+                v.reloadData()
+                print("reload\(self.dict.count)")
+                
+            }else if let v = view as? UITableView{
+                v.reloadData()
+                print("reload\(self.dict.count)")
             }
         }
+        
     }
     func initializeMessages(){
+        self.myChatData = []
         self.receiveMessage = []
         self.sendMessage = []
+        self.currentChat = []
     }
-    func mergeSender() -> [String:Message]{
-        var dict:[String:Message] = [:]
+    func mergeSender(){
         for i in self.receiveMessage{
             let name = i.sender
-            dict.updateValue(i, forKey: name)
+            self.dict.updateValue(i, forKey: name)
         }
         for i in self.sendMessage{
             let name = i.receiver
-            dict.updateValue(i, forKey: name)
+            self.dict.updateValue(i, forKey: name)
         }
-        return dict
     }
     func mergeContentByName(_ name:String) -> [Message]{
         var array:[Message] = []
@@ -104,8 +114,8 @@ class DatabaseManager{
         return array
     }
     func sendMessage(sender:String,receiver:String,content:String){
-        let dict = ["sender":sender,"receiver":receiver,"content":content]
-        db.child("messages").setValue(dict)
-        self.myChatData.append(Message(sender: sender, receiver: receiver, content: content))
+        let initDate = formatter.string(for: Date())!
+        var dict:[String:Any] = ["sender":sender,"receiver":receiver,"content":content,"initDate":initDate]
+        db.child("messages").childByAutoId().setValue(dict)
     }
 }

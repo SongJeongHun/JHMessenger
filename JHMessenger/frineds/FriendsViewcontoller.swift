@@ -107,7 +107,7 @@ class FriendsCellForViewController:UIViewController{
             vc.currentName = self.friend.name
             DatabaseManager.shared.initializeMessages()
             DatabaseManager.shared.getMessage(self)
-            vc.currentChat = DatabaseManager.shared.mergeContentByName(friend.name)
+            vc.currentChat =  DatabaseManager.shared.mergeContentByName(self.friend.name)
         }
     }
 }
