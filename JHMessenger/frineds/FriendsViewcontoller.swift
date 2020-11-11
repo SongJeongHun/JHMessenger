@@ -108,6 +108,7 @@ class FriendsCellForViewController:UIViewController{
             DatabaseManager.shared.initializeMessages()
             DatabaseManager.shared.getMessage(self)
             vc.currentChat =  DatabaseManager.shared.mergeContentByName(self.friend.name)
+            vc.currentChat.sort(by:{$0.timestamp < $1.timestamp})
         }
     }
 }

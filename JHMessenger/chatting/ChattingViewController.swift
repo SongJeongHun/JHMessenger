@@ -37,6 +37,7 @@ class ChattingViewController: UIViewController {
             vc.currentName = name
             DatabaseManager.shared.getMessage(vc.tableView)
             vc.currentChat = DatabaseManager.shared.mergeContentByName(name)
+            vc.currentChat.sort(by:{$0.timestamp < $1.timestamp})
             }
         }
     }

@@ -13,6 +13,9 @@ class DatabaseManager{
         
         //Singleton 싱글톤
     }
+    //세마포어 -> 비동기 처리 네트워킹 작업을 동기화 처리
+    //ex) semaphore가 semaphore.signal() 을 보낼때 까지 semaphore.wait() 라인에서 기다림
+    let semaphore = DispatchSemaphore(value: 0)
     let formatter: DateFormatter = {
         let f = DateFormatter()
         f.timeStyle = .short
@@ -28,7 +31,6 @@ class DatabaseManager{
     //채팅 관련
     var myChatData:[Message] = []
     var currentChat:[Message] = []
-    
     
     var receiveMessage:[Message] = []
     var sendMessage:[Message] = []
@@ -63,6 +65,7 @@ class DatabaseManager{
             let chatList = try! decoder.decode([Message].self, from: data)
             self.myChatData = chatList
             guard let messages:[Message] = myChatData else { return }
+            messages.sorted(by:{$0.timestamp < $1.timestamp})
             for i in messages {
                 if i.sender == "송정훈"{
                     self.sendMessage.append(i)
@@ -72,6 +75,7 @@ class DatabaseManager{
             }
             self.mergeSender()
            
+            
             if let v = view as? UICollectionView {
                 v.reloadData()
                 print("reload\(self.dict.count)")
@@ -80,8 +84,9 @@ class DatabaseManager{
                 v.reloadData()
                 print("reload\(self.dict.count)")
             }
+          
         }
-        
+      
     }
     func initializeMessages(){
         self.myChatData = []
@@ -90,6 +95,7 @@ class DatabaseManager{
         self.currentChat = []
     }
     func mergeSender(){
+        let semaphore = DispatchSemaphore(value: 0)
         for i in self.receiveMessage{
             let name = i.sender
             self.dict.updateValue(i, forKey: name)
@@ -98,6 +104,7 @@ class DatabaseManager{
             let name = i.receiver
             self.dict.updateValue(i, forKey: name)
         }
+     
     }
     func mergeContentByName(_ name:String) -> [Message]{
         var array:[Message] = []
@@ -111,11 +118,13 @@ class DatabaseManager{
                 array.append(i)
             }
         }
+        array.sort(by:{$0.timestamp < $1.timestamp})
         return array
     }
     func sendMessage(sender:String,receiver:String,content:String){
         let initDate = formatter.string(for: Date())!
-        var dict:[String:Any] = ["sender":sender,"receiver":receiver,"content":content,"initDate":initDate]
+        var dict:[String:Any] = ["sender":sender,"receiver":receiver,"content":content,"initTime":initDate]
         db.child("messages").childByAutoId().setValue(dict)
     }
 }
+

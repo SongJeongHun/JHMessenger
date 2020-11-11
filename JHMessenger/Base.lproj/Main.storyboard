@@ -134,6 +134,12 @@
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="25"/>
                                 </state>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="상대방" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="68i-Ei-1pJ">
+                                <rect key="frame" x="10" y="10" width="65" height="30"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GAm-JF-pS4">
                                 <rect key="frame" x="0.0" y="44" width="414" height="650"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -165,14 +171,26 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bCK-1e-0wB">
+                                                    <rect key="frame" x="43" y="31" width="75" height="10"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="75" id="bjc-BJ-cC8"/>
+                                                        <constraint firstAttribute="height" constant="10" id="gD9-r8-pDK"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="8"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="Uf2-5l-cFi" firstAttribute="leading" secondItem="Nd6-ZB-ez4" secondAttribute="trailing" constant="-10" id="25P-7Z-jQt"/>
+                                                <constraint firstItem="bCK-1e-0wB" firstAttribute="leading" secondItem="Nd6-ZB-ez4" secondAttribute="trailing" constant="3" id="6c5-oz-E6V"/>
                                                 <constraint firstAttribute="bottom" secondItem="EKb-4T-HaQ" secondAttribute="bottom" constant="13" id="KoL-nr-38J"/>
                                                 <constraint firstItem="EKb-4T-HaQ" firstAttribute="leading" secondItem="Nd6-ZB-ez4" secondAttribute="trailing" constant="40" id="MN4-GL-wDu"/>
                                                 <constraint firstItem="Uf2-5l-cFi" firstAttribute="top" secondItem="OlD-EU-1BA" secondAttribute="top" constant="5" id="RPP-ir-Ni8"/>
                                                 <constraint firstItem="Nd6-ZB-ez4" firstAttribute="top" secondItem="OlD-EU-1BA" secondAttribute="top" constant="8.5" id="fZA-AP-QQ0"/>
                                                 <constraint firstAttribute="trailing" secondItem="EKb-4T-HaQ" secondAttribute="trailingMargin" constant="8" id="miP-iv-Onc"/>
+                                                <constraint firstItem="bCK-1e-0wB" firstAttribute="top" secondItem="Uf2-5l-cFi" secondAttribute="bottom" constant="11.5" id="p26-db-mT5"/>
                                                 <constraint firstAttribute="bottom" secondItem="Nd6-ZB-ez4" secondAttribute="bottom" constant="8.5" id="tGf-ig-U3T"/>
                                                 <constraint firstItem="Nd6-ZB-ez4" firstAttribute="leading" secondItem="OlD-EU-1BA" secondAttribute="leading" constant="5" id="uh1-sr-5up"/>
                                                 <constraint firstItem="EKb-4T-HaQ" firstAttribute="top" secondItem="OlD-EU-1BA" secondAttribute="top" constant="13" id="xtZ-6b-TWQ"/>
@@ -180,33 +198,47 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="chatContent" destination="EKb-4T-HaQ" id="Qdo-Hy-gpk"/>
+                                            <outlet property="date" destination="bCK-1e-0wB" id="nzd-IE-Pju"/>
                                             <outlet property="friendsName" destination="Uf2-5l-cFi" id="g3r-FD-HdN"/>
                                             <outlet property="thumbNail" destination="Nd6-ZB-ez4" id="8y5-ju-mXW"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="mycell" id="TkP-uc-4fE" customClass="mycell" customModule="JHMessenger" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="72" width="414" height="41"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="mycell" rowHeight="45" id="TkP-uc-4fE" customClass="mycell" customModule="JHMessenger" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="72" width="414" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TkP-uc-4fE" id="aJr-kT-M5A">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="41"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tio-q6-hpp">
-                                                    <rect key="frame" x="27" y="11" width="357" height="18"/>
+                                                    <rect key="frame" x="27" y="11" width="357" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
                                                     <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4tp-Ub-TeL">
+                                                    <rect key="frame" x="329" y="28" width="75" height="10"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="10" id="10z-pw-LmP"/>
+                                                        <constraint firstAttribute="width" constant="75" id="9NY-wM-YBh"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="8"/>
+                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="tio-q6-hpp" secondAttribute="trailing" constant="10" id="2yg-k6-YZC"/>
+                                                <constraint firstItem="4tp-Ub-TeL" firstAttribute="bottom" secondItem="tio-q6-hpp" secondAttribute="bottom" constant="5" id="7ei-3e-1hr"/>
                                                 <constraint firstItem="tio-q6-hpp" firstAttribute="top" secondItem="aJr-kT-M5A" secondAttribute="topMargin" id="C5x-Wj-RXM"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="tio-q6-hpp" secondAttribute="bottom" constant="1" id="Fgk-I3-zsO"/>
                                                 <constraint firstItem="tio-q6-hpp" firstAttribute="leading" secondItem="aJr-kT-M5A" secondAttribute="leadingMargin" constant="7" id="kRz-0J-fbQ"/>
+                                                <constraint firstAttribute="trailing" secondItem="4tp-Ub-TeL" secondAttribute="trailing" constant="10" id="pzq-wm-vji"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="chatContent" destination="tio-q6-hpp" id="hHh-FQ-kgT"/>
+                                            <outlet property="date" destination="4tp-Ub-TeL" id="cLC-d2-ljG"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -215,12 +247,6 @@
                                     <outlet property="delegate" destination="qmt-lg-sug" id="Sri-OJ-IBX"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="상대방" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="68i-Ei-1pJ">
-                                <rect key="frame" x="10" y="10" width="65" height="30"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="0oT-5e-wYD"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
