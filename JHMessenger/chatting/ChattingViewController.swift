@@ -27,17 +27,17 @@ class ChattingViewController: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         DatabaseManager.shared.getMessage(self.chatcollectionView)
+        print(DatabaseManager.shared.sortedDict)
         super.viewWillAppear(animated)
     }
     //채팅방 segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let cell = sender as? UICollectionViewCell, let index = chatcollectionView.indexPath(for: cell) else { return }
         if let vc = segue.destination as? ChatContentViewController{
-            let name = Array(DatabaseManager.shared.dict.keys)[index.row]
-            vc.currentName = name
+            let name = DatabaseManager.shared.sortedDict[index.row]
+            vc.currentName = name.0
             DatabaseManager.shared.getMessage(vc.tableView)
-            vc.currentChat = DatabaseManager.shared.mergeContentByName(name)
-            vc.currentChat.sort(by:{$0.timestamp < $1.timestamp})
+            vc.currentChat = DatabaseManager.shared.mergeContentByName(name.0)
             }
         }
     }
@@ -47,13 +47,14 @@ extension ChattingViewController:UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //수정 필요
         //같은 사람 한테 여러번 오면 그만큼 생김 -> 하나로 묶기
-        return DatabaseManager.shared.dict.count
+        return DatabaseManager.shared.sortedDict.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChattingCell", for: indexPath) as? ChattingCell else { return UICollectionViewCell()}
 //        let dictioncary = self.dict[(indexPath as NSIndexPath).row]
-        cell.chatName.text = Array(DatabaseManager.shared.dict.keys)[indexPath.row]
-        cell.chatContent.text = Array(DatabaseManager.shared.dict.values)[indexPath.row].content
+
+        cell.chatName.text = DatabaseManager.shared.sortedDict[indexPath.row].0
+        cell.chatContent.text = DatabaseManager.shared.sortedDict[indexPath.row].1.content
         return cell
     }
 }

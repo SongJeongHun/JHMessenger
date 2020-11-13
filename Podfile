@@ -8,5 +8,7 @@ target 'JHMessenger' do
   # Pods for JHMessenger
 	pod "Firebase/Analytics"
 	pod "Firebase/Database"
+  pod 'Firebase/Core'
+  pod "Firebase/Firestore"
 
 end

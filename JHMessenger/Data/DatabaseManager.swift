@@ -8,21 +8,23 @@
 import Foundation
 import Firebase
 class DatabaseManager{
+    let myname = "송정훈"
     static let shared = DatabaseManager()
     private init(){
+        
         
         //Singleton 싱글톤
     }
     //세마포어 -> 비동기 처리 네트워킹 작업을 동기화 처리
     //ex) semaphore가 semaphore.signal() 을 보낼때 까지 semaphore.wait() 라인에서 기다림
-    let semaphore = DispatchSemaphore(value: 0)
+//    let semaphore = DispatchSemaphore(value: 0)
     let formatter: DateFormatter = {
         let f = DateFormatter()
         f.timeStyle = .short
         f.locale = Locale(identifier: "Ko_kr")
         return f
     }()
-    var dict:[String:Message] = [:]
+    
     let db = Database.database().reference().child("송정훈")
     //친구 목록 관련
     var dummyList:[Friends] = []
@@ -34,6 +36,10 @@ class DatabaseManager{
     
     var receiveMessage:[Message] = []
     var sendMessage:[Message] = []
+    
+    var sortedDict:Array<(String,Message)> = []
+    
+    
     func getFriendsList(_ view:UICollectionView){
         self.db.child("friends").observeSingleEvent(of: .value){DataSnapshot in
             guard let friendsData = DataSnapshot.value as? [String:Any] else { return }
@@ -67,22 +73,23 @@ class DatabaseManager{
             guard let messages:[Message] = myChatData else { return }
             messages.sorted(by:{$0.timestamp < $1.timestamp})
             for i in messages {
-                if i.sender == "송정훈"{
+                if i.sender == myname{
                     self.sendMessage.append(i)
+                    self.sendMessage.sort(by: {$0.timestamp < $1.timestamp})
+                    
                 }else{
                     self.receiveMessage.append(i)
+                    self.receiveMessage.sort(by: {$0.timestamp < $1.timestamp})
                 }
             }
             self.mergeSender()
-           
-            
             if let v = view as? UICollectionView {
                 v.reloadData()
-                print("reload\(self.dict.count)")
+                print("reload\(self.sortedDict.count)")
                 
             }else if let v = view as? UITableView{
                 v.reloadData()
-                print("reload\(self.dict.count)")
+                print("reload\(self.sortedDict.count)")
             }
           
         }
@@ -95,16 +102,17 @@ class DatabaseManager{
         self.currentChat = []
     }
     func mergeSender(){
-        let semaphore = DispatchSemaphore(value: 0)
+        var dict:[String:Message] = [:]
         for i in self.receiveMessage{
             let name = i.sender
-            self.dict.updateValue(i, forKey: name)
+            dict.updateValue(i, forKey: name)
         }
         for i in self.sendMessage{
             let name = i.receiver
-            self.dict.updateValue(i, forKey: name)
+            dict.updateValue(i, forKey: name)
         }
-     
+        sortedDict = dict.sorted(by: {$0.value.timestamp > $1.value.timestamp})
+        
     }
     func mergeContentByName(_ name:String) -> [Message]{
         var array:[Message] = []

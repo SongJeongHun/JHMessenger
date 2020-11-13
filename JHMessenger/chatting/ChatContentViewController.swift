@@ -9,8 +9,9 @@
 import UIKit
 import Firebase
 
+
 class ChatContentViewController: UIViewController, UITableViewDelegate {
-    let db = Database.database().reference().child("송정훈")
+    let db = Database.database().reference().child(DatabaseManager.shared.myname)
     
     let formatter: DateFormatter = {
         let f = DateFormatter()
@@ -43,11 +44,9 @@ class ChatContentViewController: UIViewController, UITableViewDelegate {
 //            DatabaseManager.shared.sendMessage(sender: "송정훈", receiver: self.currentName, content:message )
 //            DatabaseManager.shared.getMessage(tableView)
 //            currentChat = DatabaseManager.shared.mergeContentByName(currentName)
-        
         let initDate = formatter.string(for: Date())!
         let timestamp:Double = Date().timeIntervalSince1970.rounded()
-    
-        var dict:[String:Any] = ["sender":"송정훈","receiver":self.currentName,"content":message,"initTime":initDate,"timestamp":timestamp]
+        var dict:[String:Any] = ["sender":DatabaseManager.shared.myname,"receiver":self.currentName,"content":message,"initTime":initDate,"timestamp":timestamp]
         db.child("messages").childByAutoId().setValue(dict)
         //데이터 저장
         self.db.child("messages").observeSingleEvent(of: .value){ [self]DataSnapshot in
@@ -62,7 +61,7 @@ class ChatContentViewController: UIViewController, UITableViewDelegate {
             chatData = chatList
             guard let messages:[Message] = chatData else { return }
             for i in messages {
-                if i.sender == "송정훈"{
+                if i.sender == DatabaseManager.shared.myname{
                    sendMessage.append(i)
                 }else{
                     receiveMessage.append(i)
@@ -85,6 +84,10 @@ class ChatContentViewController: UIViewController, UITableViewDelegate {
         //notification 추가 하기 채팅방 목록 reloadData
         NotificationCenter.default.post(name: ChatContentViewController.sendFinised, object: nil)
        
+    }
+    func liste(){
+        
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -116,7 +119,7 @@ extension ChatContentViewController:UITableViewDataSource{
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if currentChat[indexPath.row].sender == "송정훈" {
+        if currentChat[indexPath.row].sender == DatabaseManager.shared.myname {
             //송신 메세지
             let mycell = tableView.dequeueReusableCell(withIdentifier: "mycell") as! mycell
             mycell.chatContent.text = currentChat[indexPath.row].content

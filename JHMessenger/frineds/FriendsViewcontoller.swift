@@ -24,6 +24,7 @@ class FriendsViewcontoller: UIViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        DatabaseManager.shared.getMessage(self.collectionView)
         DatabaseManager.shared.getFriendsList(self.collectionView)
         self.collectionView.reloadData()
     }
@@ -105,10 +106,8 @@ class FriendsCellForViewController:UIViewController{
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? ChatContentViewController{
             vc.currentName = self.friend.name
-            DatabaseManager.shared.initializeMessages()
-            DatabaseManager.shared.getMessage(self)
-            vc.currentChat =  DatabaseManager.shared.mergeContentByName(self.friend.name)
-            vc.currentChat.sort(by:{$0.timestamp < $1.timestamp})
+            DatabaseManager.shared.getMessage(vc.tableView)
+            vc.currentChat = DatabaseManager.shared.mergeContentByName(self.friend.name)
         }
     }
 }
